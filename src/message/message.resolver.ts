@@ -122,14 +122,19 @@ export class MessageResolver {
       authenticatedUser,
     );
   }
-
+  /*promise<ChatMessage> on line 137 is declared to return a value. By hovering over ChatMessage we see 
+      "A function whose declared type is neither 'undefined', 'void', nor 'any' must return a value."
+      This should either return a value or a promise of a value to satisfy the type so I decided to
+      return await this.messageLogic.like(likeMessageDto, authenticatedUser) to fix this error.
+      this can be seen on line 53,62,87,99,108,120
+      */
   @Mutation(() => ChatMessage)
   @UseGuards(GqlAuthGuard)
   async likeConversationMessage(
     @Args('likeMessageDto') likeMessageDto: LikeMessageDto,
     @AuthenticatedUser() authenticatedUser: IAuthenticatedUser,
   ): Promise<ChatMessage> {
-    await this.messageLogic.like(likeMessageDto, authenticatedUser);
+    return await this.messageLogic.like(likeMessageDto, authenticatedUser);
   }
 
   @Mutation(() => ChatMessage)
